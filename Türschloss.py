@@ -4,6 +4,19 @@
 
 import RPi.GPIO as GPIO
 import time
+import sys
+
+# path and name of the log file
+logfile = 'logfile.log'
+
+# function to save log messages to specified log file
+def log(msg):
+  # open the specified log file
+  file = open(logfile,"a")
+  # write log message with timestamp to log file
+  file.write("%s: %s\n" % (time.strftime("%d.%m.%Y %H:%M:%S"), msg))
+  # close log file
+  file.close
 
 class AuthToken:
     def __init__(self, id, secret):
@@ -91,6 +104,8 @@ def main():
         doorController = TestDoorController()
         if(authenticator.check(authInput.getInput())):
             doorController.send_open_pulse()
+        log(self.id + "," + self.secret)
+        #log("Token benutzt")
 
 if __name__ == "__main__":
     main()
