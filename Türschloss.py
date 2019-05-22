@@ -9,6 +9,10 @@ import sys
 # path and name of the log file
 logfile = 'logfile.log'
 
+# global vaiable to save stings for logfile
+userName = " "
+keyNr = " "
+
 # function to save log messages to specified log file
 def log(msg):
   # open the specified log file
@@ -55,7 +59,9 @@ class RFIDFileAuthenticator:
     def check(self,token):
         print("Prüfe ob " + token.secret + " gültig ist")
         if token.secret in self.tags:
-            print("Transport gehört: " + self.tags[token.secret])
+            print("Transponder gehört: " + self.tags[token.secret])
+            userName = self.tags[token.secret]
+            keyNr = token.secret
             return True
         else:
             print("Transponder-ID nicht gefunden")
@@ -104,7 +110,7 @@ def main():
         doorController = TestDoorController()
         if(authenticator.check(authInput.getInput())):
             doorController.send_open_pulse()
-        log(self.id + "," + self.secret)
+        log(userName + "," + keyNr)
         #log("Token benutzt")
 
 if __name__ == "__main__":
