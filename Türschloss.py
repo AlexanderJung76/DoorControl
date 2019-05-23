@@ -60,8 +60,8 @@ class RFIDFileAuthenticator:
         print("Prüfe ob " + token.secret + " gültig ist")
         if token.secret in self.tags:
             print("Transponder gehört: " + self.tags[token.secret])
-            userName = self.tags[token.secret]
-            keyNr = token.secret
+            userName = str(self.tags[token.secret])
+            keyNr = str(token.secret)
             return True
         else:
             print("Transponder-ID nicht gefunden")
