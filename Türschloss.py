@@ -4,6 +4,23 @@
 
 import RPi.GPIO as GPIO
 import time
+import sys
+
+# path and name of the log file
+logfile = 'logfile.log'
+
+# global vaiable to save stings for logfile
+userName = " "
+keyNr = " "
+
+# function to save log messages to specified log file
+def log(msg):
+  # open the specified log file
+  file = open(logfile,"a")
+  # write log message with timestamp to log file
+  file.write("%s: %s\n" % (time.strftime("%d.%m.%Y %H:%M:%S"), msg))
+  # close log file
+  file.close
 
 class AuthToken:
     def __init__(self, id, secret):
@@ -42,7 +59,11 @@ class RFIDFileAuthenticator:
     def check(self,token):
         print("Prüfe ob " + token.secret + " gültig ist")
         if token.secret in self.tags:
-            print("Transport gehört: " + self.tags[token.secret])
+            print("Transponder gehört: " + self.tags[token.secret])
+            global userName
+            global keyNr
+            userName = str(self.tags[token.secret])
+            keyNr = str(token.secret)
             return True
         else:
             print("Transponder-ID nicht gefunden")
@@ -91,6 +112,8 @@ def main():
         doorController = TestDoorController()
         if(authenticator.check(authInput.getInput())):
             doorController.send_open_pulse()
+        log(userName + "," + keyNr)
+        #log("Token benutzt")
 
 if __name__ == "__main__":
     main()
