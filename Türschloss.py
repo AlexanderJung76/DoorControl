@@ -69,40 +69,12 @@ class RFIDFileAuthenticator:
             print("Transponder-ID nicht gefunden")
             return False
 
-""" # test class for keybord input authentification
-class FileAuthenticator:
-    filename = "users.txt"
-    def readFile(self):
-        secrets = open(self.filename, 'r')
-        print ("Datei einlesen")
-        for line in secrets:
-            line = line.rstrip('\n')
-            self.id, self.secretPassword = line.split(',')
-
-    def check(self,token):
-        self.readFile()
-        print("Eingabe für '" + token.id + "' Kennwort: '" + token.secret + "' wird mit geheimen Kennwort '" + self.secretPassword + "'verglichen")
-        result = (token.secret == self.secretPassword) & (token.id == self.id)
-        print("Authentifizierung ist: " +str(result))
-        return result
- """
-
 # class for usb RFID serial reader
 class RFIDInput:
     def getInput(self):
         print ("Auf Transponder warten")
         tag = input()
         return AuthToken(None,tag)
-
-""" # test class for keybord input
-class KeybordInput:
-    def getInput(self):
-        print ("Eingabe prüfen")
-        id = input("Bitte Namen eingeben: ")
-        password = input("Bitte Kennwort eingeben: ")
-        authToken = AuthToken(id, password)
-        return authToken
- """        
 
 # main() running in an endless while loop
 def main():
