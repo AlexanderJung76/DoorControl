@@ -39,6 +39,18 @@ class TestDoorController:
         print ("LED off")
         GPIO.output(18,GPIO.LOW)
 
+# class to let an led turn on to simulate an false login
+class wronglogin:
+    def send_red_led(self):
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setwarnings(False)
+        GPIO.setup(19,GPIO.OUT)
+        print ("LED on")
+        GPIO.output(19,GPIO.HIGH)
+        time.sleep(3)
+        print ("LED off")
+        GPIO.output(19,GPIO.LOW)
+
 # class for RFID Authentication
 class RFIDFileAuthenticator:
     filename = "users.txt"
@@ -67,6 +79,7 @@ class RFIDFileAuthenticator:
             return True
         else:
             print("Transponder-ID nicht gefunden")
+            wronglogin.send_red_led()
             return False
 
 # class for usb RFID serial reader
