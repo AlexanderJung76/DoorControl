@@ -40,7 +40,7 @@ class TestDoorController:
         GPIO.output(18,GPIO.LOW)
 
 # class to let an led turn on to simulate an false login
-class wronglogin:
+class WrongLogin:
     def send_red_led(self):
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
@@ -79,7 +79,7 @@ class RFIDFileAuthenticator:
             return True
         else:
             print("Transponder-ID nicht gefunden")
-            wronglogin.send_red_led()
+            #wronglogin.send_red_led()
             return False
 
 # class for usb RFID serial reader
@@ -95,8 +95,12 @@ def main():
         authInput = RFIDInput()
         authenticator = RFIDFileAuthenticator()
         doorController = TestDoorController()
+        ledController = WrongLogin()
         if(authenticator.check(authInput.getInput())):
             doorController.send_open_pulse()
+        else:
+            ledController.send_red_led()
+                
         log(userName + "," + keyNr)
         #log("Token benutzt")
 
