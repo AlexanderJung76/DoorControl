@@ -79,7 +79,6 @@ class RFIDFileAuthenticator:
             return True
         else:
             print("Transponder-ID nicht gefunden")
-            #wronglogin.send_red_led()
             return False
 
 # class for usb RFID serial reader
