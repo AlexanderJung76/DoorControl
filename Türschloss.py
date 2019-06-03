@@ -33,10 +33,10 @@ class TestDoorController:
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
         GPIO.setup(18,GPIO.OUT)
-        print ("LED on")
+        print ("Green LED on")
         GPIO.output(18,GPIO.HIGH)
         time.sleep(3)
-        print ("LED off")
+        print ("Green LED off")
         GPIO.output(18,GPIO.LOW)
 
 # class to let an led turn on to simulate an false login
@@ -45,10 +45,10 @@ class WrongLogin:
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
         GPIO.setup(19,GPIO.OUT)
-        print ("LED on")
+        print ("Red LED on")
         GPIO.output(19,GPIO.HIGH)
         time.sleep(3)
-        print ("LED off")
+        print ("Red LED off")
         GPIO.output(19,GPIO.LOW)
 
 # class for RFID Authentication
