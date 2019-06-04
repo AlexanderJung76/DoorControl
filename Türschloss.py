@@ -98,7 +98,6 @@ class RFIDInput:
         print ("Auf Transponder warten")
         try:
             tag = input()
-            tag=int(tag)
         except:
             print("Fehler bei der RFID Eingabe")
         
