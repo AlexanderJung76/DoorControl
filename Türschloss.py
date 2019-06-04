@@ -15,12 +15,20 @@ keyNr = " "
 
 # function to save log messages to specified log file
 def log(msg):
-  # open the specified log file
-  file = open(logfile,"a")
-  # write log message with timestamp to log file
-  file.write("%s: %s\n" % (time.strftime("%d.%m.%Y %H:%M:%S"), msg))
-  # close log file
-  file.close
+    try:
+        # open the specified log file
+        file = open(logfile,"a")
+    except:
+        print("Fehler beim öffnen von logfile.log")
+
+    try:
+        # write log message with timestamp to log file
+        file.write("%s: %s\n" % (time.strftime("%d.%m.%Y %H:%M:%S"), msg))
+    except:
+        print("Fehler beim schreiben in logfile.log")
+    finally:
+        # close log file
+        file.close
 
 class AuthToken:
     def __init__(self, id, secret):
@@ -33,11 +41,23 @@ class TestDoorController:
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
         GPIO.setup(18,GPIO.OUT)
-        print ("LED on")
+        print ("Green LED on")
         GPIO.output(18,GPIO.HIGH)
         time.sleep(3)
-        print ("LED off")
+        print ("Green LED off")
         GPIO.output(18,GPIO.LOW)
+
+# class to let an led turn on to simulate an false login
+class WrongLogin:
+    def send_red_led(self):
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setwarnings(False)
+        GPIO.setup(19,GPIO.OUT)
+        print ("Red LED on")
+        GPIO.output(19,GPIO.HIGH)
+        time.sleep(3)
+        print ("Red LED off")
+        GPIO.output(19,GPIO.LOW)
 
 # class for RFID Authentication
 class RFIDFileAuthenticator:
@@ -48,7 +68,10 @@ class RFIDFileAuthenticator:
     
     # read users.txt
     def readFile(self):
-        secrets = open(self.filename, 'r')
+        try:
+            secrets = open(self.filename, 'r')
+        except:
+            print("Fehler beim lesen von users.txt")        
         print("Lese Datei " +self.filename)
         for line in secrets:
             line = line.rstrip('\n')
@@ -73,7 +96,11 @@ class RFIDFileAuthenticator:
 class RFIDInput:
     def getInput(self):
         print ("Auf Transponder warten")
-        tag = input()
+        try:
+            tag = input()
+        except:
+            print("Fehler bei der RFID Eingabe")
+        
         return AuthToken(None,tag)
 
 # main() running in an endless while loop
@@ -82,10 +109,12 @@ def main():
         authInput = RFIDInput()
         authenticator = RFIDFileAuthenticator()
         doorController = TestDoorController()
+        ledController = WrongLogin()
         if(authenticator.check(authInput.getInput())):
             doorController.send_open_pulse()
+        else:
+            ledController.send_red_led()                
         log(userName + "," + keyNr)
-        #log("Token benutzt")
 
 if __name__ == "__main__":
     main()
