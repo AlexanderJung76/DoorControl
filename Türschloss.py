@@ -71,7 +71,7 @@ class RFIDFileAuthenticator:
         try:
             secrets = open(self.filename, 'r')
         except:
-            print("Fehler bim lesen von users.txt")        
+            print("Fehler beim lesen von users.txt")        
         print("Lese Datei " +self.filename)
         for line in secrets:
             line = line.rstrip('\n')
@@ -96,7 +96,12 @@ class RFIDFileAuthenticator:
 class RFIDInput:
     def getInput(self):
         print ("Auf Transponder warten")
-        tag = input()
+        try:
+            tag = input()
+            tag=int(tag)
+        except:
+            print("Fehler bei der RFID Eingabe")
+        
         return AuthToken(None,tag)
 
 # main() running in an endless while loop
@@ -109,8 +114,7 @@ def main():
         if(authenticator.check(authInput.getInput())):
             doorController.send_open_pulse()
         else:
-            ledController.send_red_led()
-                
+            ledController.send_red_led()                
         log(userName + "," + keyNr)
 
 if __name__ == "__main__":
