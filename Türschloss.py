@@ -68,7 +68,10 @@ class RFIDFileAuthenticator:
     
     # read users.txt
     def readFile(self):
-        secrets = open(self.filename, 'r')
+        try:
+            secrets = open(self.filename, 'r')
+        except:
+            print("Fehler bim lesen von users.txt")        
         print("Lese Datei " +self.filename)
         for line in secrets:
             line = line.rstrip('\n')
