@@ -15,12 +15,20 @@ keyNr = " "
 
 # function to save log messages to specified log file
 def log(msg):
-  # open the specified log file
-  file = open(logfile,"a")
-  # write log message with timestamp to log file
-  file.write("%s: %s\n" % (time.strftime("%d.%m.%Y %H:%M:%S"), msg))
-  # close log file
-  file.close
+    try:
+        # open the specified log file
+        file = open(logfile,"a")
+    except:
+        print("Fehler beim öffnen von logfile.log")
+
+    try:
+        # write log message with timestamp to log file
+        file.write("%s: %s\n" % (time.strftime("%d.%m.%Y %H:%M:%S"), msg))
+    except:
+        print("Fehler beim schreiben in logfile.log")
+    finally:
+        # close log file
+        file.close
 
 class AuthToken:
     def __init__(self, id, secret):
@@ -101,7 +109,6 @@ def main():
             ledController.send_red_led()
                 
         log(userName + "," + keyNr)
-        #log("Token benutzt")
 
 if __name__ == "__main__":
     main()
